@@ -57,6 +57,9 @@
         nav ul li a:hover {
             color: #f1c40f;
         }
+        nav ul li a.active{
+    color:#f1c40f;
+}
 
         /* HERO */
         .hero {
@@ -588,4 +591,101 @@
 </footer>
 
 </body>
+    <script>// =================== NAVBAR ===================
+const toggle = document.getElementById("menu-toggle");
+const navLinks = document.querySelector("nav ul");
+
+toggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+});
+
+// =================== SMOOTH SCROLL ===================
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", function(e){
+        e.preventDefault();
+        document.querySelector(this.getAttribute("href"))
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+    });
+});
+
+// =================== BOOKING FORM ===================
+const bookingForm = document.querySelector(".booking-form form");
+
+bookingForm.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const name = bookingForm.querySelector('input[type="text"]').value;
+    const email = bookingForm.querySelector('input[type="email"]').value;
+    const phone = bookingForm.querySelector('input[type="tel"]').value;
+
+    const checkin = bookingForm.querySelectorAll('input[type="date"]')[0].value;
+    const checkout = bookingForm.querySelectorAll('input[type="date"]')[1].value;
+
+    if(checkout <= checkin){
+        alert("Check-out date should be after Check-in date.");
+        return;
+    }
+
+    const booking = {
+        name,
+        email,
+        phone,
+        checkin,
+        checkout
+    };
+
+    localStorage.setItem("HotelBooking", JSON.stringify(booking));
+
+    alert("Room Booked Successfully!");
+
+    bookingForm.reset();
+});
+
+// ================= CONTACT FORM =================
+
+const contactForm = document.querySelector(".contact-form form");
+
+contactForm.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    alert("Thank You! We will contact you soon.");
+
+    contactForm.reset();
+
+});
+
+// ================= ACTIVE NAV =================
+
+const sections = document.querySelectorAll("section");
+const navItems = document.querySelectorAll("nav ul li a");
+
+window.addEventListener("scroll",()=>{
+
+let current="";
+
+sections.forEach(section=>{
+
+const sectionTop=section.offsetTop-120;
+
+if(pageYOffset>=sectionTop){
+current=section.getAttribute("id");
+}
+
+});
+
+navItems.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#"+current){
+link.classList.add("active");
+}
+
+});
+
+});</script>
 </html>
